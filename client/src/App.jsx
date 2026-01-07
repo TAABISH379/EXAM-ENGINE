@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import Home from './pages/Home';
@@ -36,6 +37,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
+      <Analytics />
     </AuthProvider>
   );
 }
