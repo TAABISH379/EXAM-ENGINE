@@ -1,5 +1,10 @@
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+const fs = require('fs');
+// Try to load .env from current dir or server dir
+const envPath = fs.existsSync(path.resolve(__dirname, '.env'))
+    ? path.resolve(__dirname, '.env')
+    : path.resolve(__dirname, '../server/.env');
+require('dotenv').config({ path: envPath });
 const express = require('express');
 const cors = require('cors');
 const generateRoutes = require('./routes/generateRoutes');
