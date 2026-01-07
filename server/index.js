@@ -18,15 +18,21 @@ app.get('/', (req, res) => {
     res.send('Exam Engine AI is running.');
 });
 
-const server = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+    const server = app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use.`);
-    } else {
-        console.error('Server error:', err);
-    }
-});
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(`Port ${PORT} is already in use.`);
+        } else {
+            console.error('Server error:', err);
+        }
+    });
+}
+
+module.exports = app;
+
+
 
