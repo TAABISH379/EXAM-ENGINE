@@ -86,3 +86,55 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+exports.googleLogin = async (req, res) => {
+    try {
+        const { token } = req.body;
+        if (!token) return res.status(400).json({ error: 'Token required' });
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+        const payload = ticket.getPayload();
+
+        const { email, name, sub: googleId } = payload;
+
+        let user = findUserByEmail(email);
+
+        if (!user) {
+            // Create new user from Google
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                password: null, // No password for google users
+                className: "10", // Default
+                board: "CBSE", // Default
+                googleId,
+                createdAt: new Date().toISOString()
+            };
+            if (!createUser(newUser)) {
+                return res.status(500).json({ error: 'Failed to create user' });
+            }
+            user = newUser;
+        }
+
+        const jwtToken = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
+        // eslint-disable-next-line no-unused-vars
+        const { password, ...userWithoutPassword } = user;
+
+        res.json({
+            message: 'Google Login successful',
+            token: jwtToken,
+            user: userWithoutPassword
+        });
+
+    } catch (error) {
+        console.error('Google Auth Error:', error);
+        res.status(401).json({ error: 'Invalid Google Token' });
+    }
+};

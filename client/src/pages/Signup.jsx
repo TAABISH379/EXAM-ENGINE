@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { GoogleLogin } from '@react-oauth/google';
 import { Mail, User, Lock, BookOpen, GraduationCap, ArrowRight } from 'lucide-react';
 
 const Signup = () => {
@@ -97,6 +98,43 @@ const Signup = () => {
                     </div>
 
                     {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm">{error}</div>}
+
+                    <div className="mb-6 flex justify-center">
+                        <GoogleLogin
+                            text="signup_with"
+                            onSuccess={async (credentialResponse) => {
+                                try {
+                                    const res = await fetch('/api/auth/google', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ token: credentialResponse.credential }),
+                                    });
+                                    const data = await res.json();
+                                    if (res.ok) {
+                                        login(data.user, data.token);
+                                        navigate('/');
+                                    } else {
+                                        setError(data.error);
+                                    }
+                                } catch (err) {
+                                    console.error("Google Signup Error", err);
+                                    setError("Google Signup Failed");
+                                }
+                            }}
+                            onError={() => {
+                                setError('Google Signup Failed');
+                            }}
+                        />
+                    </div>
+
+                    <div className="relative mb-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-slate-200"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-2 bg-[#f8fafc] text-slate-500">Or sign up with email</span>
+                        </div>
+                    </div>
 
                     <form className="space-y-5" onSubmit={handleSubmit}>
                         <div>
