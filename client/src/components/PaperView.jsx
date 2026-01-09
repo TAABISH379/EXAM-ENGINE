@@ -44,7 +44,7 @@ const PaperView = ({ paper }) => {
                         <h3 className="font-bold underline mb-3 text-slate-800 uppercase text-sm">General Instructions:</h3>
                         <ul className="list-decimal list-inside text-sm space-y-1.5 text-slate-700">
                             {instructions.map((inst, index) => (
-                                <li key={index}>{inst.replace(/^\d+[\.\)]\s*/, '')}</li>
+                                <li key={index}>{inst.replace(/^\d+[.)]\s*/, '')}</li>
                             ))}
                         </ul>
                     </div>
@@ -65,14 +65,14 @@ const PaperView = ({ paper }) => {
                                             <span className="font-bold w-8 text-slate-800">{q.questionNumber}.</span>
                                             <div className="flex-1">
                                                 <p className="mb-2 font-medium text-slate-900 leading-relaxed">
-                                                    {q.text.replace(/^\d+[\.\)]\s*/, '').replace(/^Q\d+[\.\)]\s*/i, '')}
+                                                    {q.text.replace(/^\d+[.)]\s*/, '').replace(/^Q\d+[.)]\s*/i, '')}
                                                 </p>
                                                 {q.type === 'MCQ' && q.options && (
                                                     <div className="grid grid-cols-2 gap-x-8 gap-y-2 mt-3 ml-4">
                                                         {q.options.map((opt, oIdx) => (
                                                             <div key={oIdx} className="text-sm text-slate-800 font-medium">
                                                                 <span className="font-bold mr-2">({String.fromCharCode(65 + oIdx)})</span>
-                                                                {opt.replace(/^[A-D][\.\)]\s*/, '').replace(/^\([A-D]\)\s*/, '')}
+                                                                {opt.replace(/^[A-D][.)]\s*/, '').replace(/^\([A-D]\)\s*/, '')}
                                                             </div>
                                                         ))}
                                                     </div>
