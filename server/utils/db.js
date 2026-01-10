@@ -43,7 +43,47 @@ const createUser = (user) => {
     return writeUsers(users);
 };
 
+const PAPERS_FILE = path.join(DATA_DIR, 'papers.json');
+
+if (!fs.existsSync(PAPERS_FILE)) {
+    fs.writeFileSync(PAPERS_FILE, JSON.stringify([]));
+}
+
+const readPapers = () => {
+    try {
+        const data = fs.readFileSync(PAPERS_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        console.error("Error reading papers db:", err);
+        return [];
+    }
+};
+
+const writePapers = (papers) => {
+    try {
+        fs.writeFileSync(PAPERS_FILE, JSON.stringify(papers, null, 2));
+        return true;
+    } catch (err) {
+        console.error("Error writing papers db:", err);
+        return false;
+    }
+};
+
+const savePaper = (paper) => {
+    const papers = readPapers();
+    papers.push(paper);
+    return writePapers(papers);
+};
+
+const getPapersByUserId = (userId) => {
+    const papers = readPapers();
+    // Sort by created date descending
+    return papers.filter(p => p.userId === userId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+};
+
 module.exports = {
     findUserByEmail,
-    createUser
+    createUser,
+    savePaper,
+    getPapersByUserId
 };

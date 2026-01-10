@@ -13,6 +13,22 @@ const PaperView = ({ paper }) => {
         window.print();
     };
 
+    const handleDownload = async () => {
+        if (typeof window === 'undefined') return;
+
+        await import('html2pdf.js').then(html2pdf => {
+            const element = document.getElementById('exam-paper');
+            const opt = {
+                margin: [10, 10], // top, left, bottom, right (mm approx)
+                filename: `${paper.metadata.subject}_${paper.metadata.class}_${paper.metadata.board}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf.default().set(opt).from(element).save();
+        });
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -73,8 +89,11 @@ const PaperView = ({ paper }) => {
                 </div>
 
                 <div className="flex gap-3 w-full sm:w-auto">
-                    <button className="flex-1 sm:flex-none py-3 px-4 rounded-xl font-bold text-slate-600 bg-white/40 hover:bg-white/60 border border-white/50 transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95">
-                        <Share2 size={18} />
+                    <button
+                        onClick={handleDownload}
+                        className="flex-1 sm:flex-none py-3 px-4 rounded-xl font-bold text-slate-600 bg-white/40 hover:bg-white/60 border border-white/50 transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95"
+                    >
+                        <Download size={18} />
                     </button>
                     <button
                         onClick={handlePrint}
