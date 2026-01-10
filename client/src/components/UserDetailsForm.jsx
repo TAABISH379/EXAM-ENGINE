@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 import { User, BookOpen, GraduationCap, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 
 const UserDetailsForm = () => {

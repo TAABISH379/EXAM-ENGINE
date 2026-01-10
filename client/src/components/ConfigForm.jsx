@@ -14,6 +14,7 @@ const ConfigForm = ({ onGenerate, loading }) => {
 
     useEffect(() => {
         if (user) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData(prev => {
                 const newBoard = user.board || prev.board;
                 const newClass = user.className || prev.className;
