@@ -4,7 +4,6 @@ const { GoogleGenAI } = require('@google/genai');
 // but we will initialize the client here.
 
 exports.generateExamPaper = async ({ board, className, subject, difficulty = 'medium' }) => {
-  let boardRules = "";
   if (board === "CBSE") {
     boardRules = `
         2. BOARD-SPECIFIC STYLE (CBSE):
