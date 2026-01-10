@@ -4,7 +4,7 @@ import PaperView from '../components/PaperView';
 import Navbar from '../components/Navbar';
 import { generatePaper } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Premium Skeleton Loader
 const SkeletonPaper = () => (
