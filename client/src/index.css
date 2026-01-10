@@ -1,63 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Outfit', sans-serif;
-
-  --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
-  --color-primary-700: #0369a1;
-  --color-primary-900: #0c4a6e;
-
-  --color-brand-light: #a5b4fc;
-  --color-brand: #6366f1;
-  --color-brand-dark: #4338ca;
-  --color-brand-accent: #f472b6;
-
-  --color-slate-850: #1e293b;
-
-  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-  --shadow-glass-sm: 0 4px 16px 0 rgba(31, 38, 135, 0.05);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.4);
-
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-shine: shine 3s linear infinite;
-
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-20px);
-    }
-  }
-
-  @keyframes shine {
-    0% {
-      background-position: 200% center;
-    }
-
-    100% {
-      background-position: -200% center;
-    }
-  }
 }
 
 body {
-  @apply font-sans bg-slate-50 text-slate-800 antialiased;
+  @apply font-sans bg-slate-50 text-slate-800 antialiased overflow-x-hidden;
+  /* Dynamic Mesh Gradient Background */
+  background-color: #f8fafc;
   background-image:
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.1) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(244, 114, 182, 0.1) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(34, 211, 238, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(232, 121, 249, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(56, 189, 248, 0.15) 0px, transparent 50%);
   background-attachment: fixed;
+  background-size: 150% 150%;
+  animation: meshFlow 20s ease infinite alternate;
+}
+
+@keyframes meshFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 100%;
+  }
 }
 
 h1,
@@ -66,39 +36,54 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-heading tracking-tight group-hover:tracking-normal transition-all duration-300;
+  @apply font-heading tracking-tight;
 }
 
-/* Premium Glassmorphism */
+/* --- COSMIC GLASSMORPHISM --- */
+
 .glass-panel {
-  @apply bg-white/70 backdrop-blur-2xl border border-white/60 shadow-glass rounded-3xl;
+  @apply bg-white/60 backdrop-blur-2xl border border-white/60 shadow-glass rounded-3xl relative overflow-hidden;
+}
+
+/* Shine effect on glass panels */
+.glass-panel::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/40 to-transparent pointer-events-none opacity-50;
 }
 
 .glass-card {
-  @apply bg-white/40 backdrop-blur-lg border border-white/40 shadow-glass-sm rounded-2xl hover:bg-white/60 hover:-translate-y-1 transition-all duration-300;
+  @apply bg-white/40 backdrop-blur-xl border border-white/50 shadow-glass-sm rounded-2xl transition-all duration-300;
+}
+
+.glass-card:hover {
+  @apply bg-white/70 -translate-y-2 shadow-2xl shadow-brand/10 border-brand/20;
 }
 
 .glass-input {
-  @apply bg-white/50 backdrop-blur-md border border-slate-200/60 focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-300 text-slate-800 placeholder:text-slate-400 rounded-xl shadow-inner;
+  @apply bg-white/40 backdrop-blur-md border border-slate-200/60 focus:border-brand focus:ring-4 focus:ring-brand/20 transition-all duration-300 text-slate-800 placeholder:text-slate-400 rounded-xl shadow-inner py-3 px-4;
 }
 
-/* Glowing Buttons */
+/* --- COSMIC BUTTONS --- */
+
 .btn-primary {
-  @apply relative overflow-hidden bg-gradient-to-r from-brand to-brand-dark text-white font-bold shadow-lg shadow-brand/30 hover:shadow-brand/50 hover:shadow-glow transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 rounded-xl;
+  @apply relative overflow-hidden bg-gradient-to-r from-brand-dark via-brand to-brand-accent text-white font-bold shadow-lg shadow-brand/30 transition-all duration-300 transform active:scale-95 rounded-xl flex items-center justify-center gap-2;
+  background-size: 200% auto;
 }
 
-.btn-primary::after {
-  content: '';
-  @apply absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform skew-x-12 transition-all duration-1000;
+.btn-primary:hover {
+  @apply shadow-glow -translate-y-1;
+  background-position: right center;
 }
 
-.btn-primary:hover::after {
-  @apply left-[100%];
+/* Glowing text gradient */
+.text-gradient-cosmic {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-dark via-brand to-brand-accent font-extrabold;
 }
 
-/* Custom Scrollbar */
+/* --- SCROLLBAR --- */
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -106,5 +91,10 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 hover:bg-slate-300 rounded-full;
+  @apply bg-slate-300/50 hover:bg-brand/50 rounded-full border-4 border-transparent bg-clip-content;
+}
+
+/* --- ANIMATED BLOBS (Background Decor) --- */
+.blob-decor {
+  @apply absolute rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob pointer-events-none;
 }

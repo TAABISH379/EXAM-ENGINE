@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, GraduationCap, Menu, X, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { LogOut, GraduationCap, Menu, X, Sparkles, Rocket } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -15,46 +15,51 @@ const Navbar = () => {
     };
 
     return (
-        <motion.nav
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
-            className="sticky top-0 z-50 mb-8 w-full"
-        >
-            <div className="absolute inset-0 bg-white/70 backdrop-blur-xl border-b border-white/50 shadow-sm"></div>
+        <div className="fixed top-0 left-0 w-full z-50 px-4 pt-6 md:px-8">
+            <motion.nav
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
+                className="max-w-7xl mx-auto rounded-3xl bg-white/60 backdrop-blur-xl border border-white/40 shadow-glass-sm overflow-hidden"
+            >
+                {/* Shiny glass reflection */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 translate-x-[-150%] animate-shine pointer-events-none"></div>
 
-            <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
-                <div className="flex justify-between items-center">
+                <div className="px-6 py-3 relative z-10 flex justify-between items-center">
                     {/* Logo Area */}
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-                        <div className="w-10 h-10 bg-gradient-to-br from-brand to-brand-dark rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/20 group-hover:scale-105 transition-transform duration-300">
-                            <GraduationCap size={22} />
+                        <div className="relative">
+                            <div className="absolute inset-0 bg-brand-glow blur-lg opacity-40 group-hover:opacity-70 transition-opacity"></div>
+                            <div className="w-10 h-10 bg-gradient-to-br from-brand-light to-brand-dark rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/20 relative z-10 group-hover:rotate-12 transition-transform duration-500">
+                                <Rocket size={20} className="group-hover:-translate-y-1 transition-transform" />
+                            </div>
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-xl font-bold text-slate-900 font-heading tracking-tight group-hover:text-brand transition-colors">ExamEngine</span>
-                            <span className="text-[10px] font-bold text-brand-accent uppercase tracking-widest flex items-center gap-1">
-                                <Sparkles size={8} /> AI Powered
+                            <span className="text-xl font-bold font-heading tracking-tight text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-brand-dark group-hover:to-brand-accent transition-all">ExamEngine</span>
+                            <span className="text-[10px] font-bold text-brand-dark flex items-center gap-1 opacity-80 uppercase tracking-widest">
+                                <Sparkles size={8} /> Cosmic Edition
                             </span>
                         </div>
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:block">
+                    <div className="hidden md:flex items-center gap-6">
                         {user ? (
-                            <div className="flex items-center gap-6">
+                            <>
                                 <div className="text-right group cursor-default">
                                     <p className="text-sm font-bold text-slate-800 group-hover:text-brand transition-colors">{user.name}</p>
-                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Class {user.className} • {user.board}</p>
+                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider bg-white/50 px-2 py-0.5 rounded-full inline-block mt-0.5 border border-white/50">{user.board} • {user.className}</p>
                                 </div>
-                                <div className="w-px h-8 bg-slate-200"></div>
+                                <div className="w-px h-8 bg-slate-200/60"></div>
                                 <button
                                     onClick={handleLogout}
-                                    className="flex items-center gap-2 text-sm text-slate-500 hover:text-red-600 font-bold bg-slate-50 hover:bg-red-50 px-5 py-2.5 rounded-xl transition-all border border-transparent hover:border-red-100 cursor-pointer active:scale-95 group"
+                                    className="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-red-500 bg-white/40 hover:bg-red-50/50 px-5 py-2.5 rounded-xl transition-all border border-transparent hover:border-red-100 cursor-pointer active:scale-95 group relative overflow-hidden"
                                 >
+                                    <div className="absolute inset-0 bg-red-100/0 group-hover:bg-red-100/20 transition-colors"></div>
                                     <LogOut size={16} className="group-hover:-translate-x-0.5 transition-transform" />
                                     <span>Logout</span>
                                 </button>
-                            </div>
+                            </>
                         ) : (
                             <div className="space-x-4">
                                 <span className="text-sm font-medium text-slate-400">Guest Mode</span>
@@ -66,7 +71,7 @@ const Navbar = () => {
                     <div className="md:hidden">
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                            className="p-2 text-slate-600 hover:bg-white/50 rounded-lg transition-colors cursor-pointer"
                         >
                             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -80,13 +85,13 @@ const Navbar = () => {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="md:hidden overflow-hidden"
+                            className="md:hidden overflow-hidden bg-white/40 backdrop-blur-md border-t border-white/20"
                         >
-                            <div className="pt-4 pb-2 space-y-4 border-t border-slate-100 mt-4">
+                            <div className="p-4 space-y-4">
                                 {user && (
                                     <>
-                                        <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-100 flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full bg-brand-light/20 flex items-center justify-center text-brand font-bold">
+                                        <div className="bg-white/60 p-5 rounded-2xl flex items-center gap-4 shadow-sm">
+                                            <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold">
                                                 {user.name[0]}
                                             </div>
                                             <div>
@@ -96,10 +101,12 @@ const Navbar = () => {
                                         </div>
                                         <button
                                             onClick={handleLogout}
-                                            className="w-full flex items-center justify-center gap-2 text-red-600 font-bold bg-white border border-red-100 shadow-sm px-4 py-4 rounded-xl transition-all cursor-pointer active:scale-95"
+                                            className="w-full flex items-center justify-center gap-2 text-red-600 font-bold bg-white/80 border border-red-100 shadow-sm px-4 py-4 rounded-xl transition-all cursor-pointer active:scale-95"
                                         >
-                                            <LogOut size={18} />
-                                            <span>Logout</span>
+                                            <div className="w-full flex items-center justify-center gap-2">
+                                                <LogOut size={18} />
+                                                <span>Logout</span>
+                                            </div>
                                         </button>
                                     </>
                                 )}
@@ -107,8 +114,8 @@ const Navbar = () => {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>
-        </motion.nav>
+            </motion.nav>
+        </div>
     );
 };
 
