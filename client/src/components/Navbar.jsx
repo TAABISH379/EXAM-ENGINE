@@ -92,7 +92,7 @@ const Navbar = () => {
                                     <>
                                         <div className="bg-white/60 p-5 rounded-2xl flex items-center gap-4 shadow-sm">
                                             <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold">
-                                                {user.name[0]}
+                                                {user?.name?.[0] || 'U'}
                                             </div>
                                             <div>
                                                 <p className="font-bold text-slate-800 text-lg leading-tight">{user.name}</p>
