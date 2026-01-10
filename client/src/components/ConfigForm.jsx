@@ -14,11 +14,19 @@ const ConfigForm = ({ onGenerate, loading }) => {
 
     useEffect(() => {
         if (user) {
-            setFormData(prev => ({
-                ...prev,
-                board: user.board || prev.board,
-                className: user.className || prev.className
-            }));
+            setFormData(prev => {
+                const newBoard = user.board || prev.board;
+                const newClass = user.className || prev.className;
+
+                if (prev.board === newBoard && prev.className === newClass) {
+                    return prev;
+                }
+                return {
+                    ...prev,
+                    board: newBoard,
+                    className: newClass
+                };
+            });
         }
     }, [user]);
 
