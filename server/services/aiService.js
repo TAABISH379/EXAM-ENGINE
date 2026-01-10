@@ -24,63 +24,59 @@ exports.generateExamPaper = async ({ board, className, subject, difficulty = 'me
   }
 
   const prompt = `
-    You are an expert Indian school examination paper setter and ed-tech system designer.
-
-    Task: Generate a Class ${className} ${board} ${subject} Question Paper.
+    You are an expert Chief Examiner and Question Paper Setter for ${board} Board India.
+    Your task is to create a realistic, high-quality "Question Paper" for Class ${className}, Subject: ${subject}.
     Difficulty Level: ${difficulty}
 
-    STRICT RULES:
-    1. Follow ONLY the latest official ${board} syllabus for Class ${className}.
-    2. Follow the exact board-wise exam pattern, marks distribution, and section structure.
-    3. Do NOT copy past-year questions verbatim.
-    4. Do NOT include out-of-syllabus topics.
-    5. Use board-appropriate language and formatting.
-    6. All numerical data must be mathematically valid.
+    STRICT ACADEMIC STANDARDS:
+    1. TONE: Use formal, authoritative academic English (British spelling). Avoid conversational or AI-like phrasing.
+    2. FORMAT: The output must purely return JSON, but the content within must mimic real physical papers.
+    3. CURRICULUM: Stick strictly to the latest ${board} syllabus.
+    4. QUESTION TYPES:
+       - ${board} includes Competency-based questions (Source-based, Case-based).
+       - Use "Or" options for internal choices where applicable (e.g., "(a) ... OR (b) ...").
+    
+    METADATA & BOILERPLATE:
+    - Include realistic header data: Time (variable per subject), Max Marks (e.g., 80 or 70), Series Code (e.g., Q.P. Code 30/1/1), and Set No.
 
-    ${boardRules}
-
-    3. MARKING SCHEME
-    For every non-MCQ question:
-    - Provide a clear, step-wise marking scheme
-    - Allocate marks explicitly
-    - No extra or missing steps
-
-    4. FORMATTING RULES:
-    - Do NOT include question numbers in the "text" field (e.g., just "Define force", NOT "1. Define force").
-    - Do NOT include option labels in "options" (e.g., just "Blue", NOT "(a) Blue").
-    - Do NOT include numbers in "instructions" (e.g., just "All questions compulsory", NOT "1. All questions compulsory").
-
-    OUTPUT FORMAT:
-    Provide the output in JSON format with the following structure:
+    JSON OUPUT STRUCTURE:
     {
       "metadata": {
         "board": "${board}",
         "class": "${className}",
         "subject": "${subject}",
         "time": "3 Hours",
-        "maxMarks": 80
+        "maxMarks": 80,
+        "qpCode": "30/1/1",
+        "set": "4"
       },
-      "instructions": ["General instruction 1", "General instruction 2"],
+      "instructions": [
+        "Please check that this question paper contains XX printed pages.",
+        "Q.P. Code given on the right hand side of the question paper should be written on the title page of the answer-book by the candidate.",
+        "Please check that this question paper contains XX questions.",
+        "15 minute time has been allotted to read this question paper."
+      ],
       "sections": [
         {
-          "name": "Section A",
+          "name": "SECTION A",
           "marks": 20,
+          "descriptor": "(Reading Skills / Objective type)",
           "questions": [
-            {
-              "questionNumber": 1,
-              "text": "Question text here...",
-              "marks": 1,
-              "type": "MCQ", 
-              "options": ["A", "B", "C", "D"], // Only for MCQs
-              "answer": "Correct Answer", // Brief answer or option
-              "markingScheme": "1 mark for correct option" 
-            }
+             {
+               "questionNumber": 1,
+               "text": "Read the following passage and answer the questions execution...",
+               "marks": 1,
+               "type": "MCQ",
+               "options": ["Option A", "Option B", "Option C", "Option D"],
+               "answer": "Option A",
+               "markingScheme": "1 mark for correct identification."
+             }
           ]
         }
       ]
     }
     
-    Ensure the marking scheme is detailed for descriptive questions.
+    IMPORTANT: Provide purely the JSON. Do not write "Here is the paper".
     `;
 
 
@@ -184,12 +180,15 @@ function getMockPaper(board, className, subject) {
       "class": className,
       "subject": subject,
       "time": "3 Hours",
-      "maxMarks": 80
+      "maxMarks": 80,
+      "qpCode": "30/1/1",
+      "set": "1"
     },
     "instructions": [
-      `This is a ${board} Class ${className} Mock Paper.`,
-      "Questions are randomized from a backup pool (API Rate Limit Active).",
-      "All questions are compulsory."
+      "Please check that this question paper contains 4 printed pages.",
+      "Q.P. Code given on the right hand side of the question paper should be written on the title page of the answer-book by the candidate.",
+      "Please check that this question paper contains 20 questions.",
+      "15 minute time has been allotted to read this question paper."
     ],
     "sections": [
       {
