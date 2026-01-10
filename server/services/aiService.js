@@ -4,6 +4,7 @@ const { GoogleGenAI } = require('@google/genai');
 // but we will initialize the client here.
 
 exports.generateExamPaper = async ({ board, className, subject, difficulty = 'medium' }) => {
+  let boardRules = "";
   if (board === "CBSE") {
     boardRules = `
         2. BOARD-SPECIFIC STYLE (CBSE):
@@ -34,6 +35,8 @@ exports.generateExamPaper = async ({ board, className, subject, difficulty = 'me
     4. QUESTION TYPES:
        - ${board} includes Competency-based questions (Source-based, Case-based).
        - Use "Or" options for internal choices where applicable (e.g., "(a) ... OR (b) ...").
+       
+       ${boardRules}
     
     METADATA & BOILERPLATE:
     - Include realistic header data: Time (variable per subject), Max Marks (e.g., 80 or 70), Series Code (e.g., Q.P. Code 30/1/1), and Set No.
